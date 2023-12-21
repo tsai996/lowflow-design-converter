@@ -2,9 +2,9 @@ package com.lowflow.pojo.node;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.SequenceFlow;
-import org.flowable.bpmn.model.StartEvent;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.SequenceFlow;
+import org.activiti.bpmn.model.StartEvent;
 
 import java.util.*;
 

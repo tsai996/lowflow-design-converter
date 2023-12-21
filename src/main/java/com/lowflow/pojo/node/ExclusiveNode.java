@@ -2,8 +2,8 @@ package com.lowflow.pojo.node;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.flowable.bpmn.model.ExclusiveGateway;
-import org.flowable.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.ExclusiveGateway;
+import org.activiti.bpmn.model.FlowElement;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;

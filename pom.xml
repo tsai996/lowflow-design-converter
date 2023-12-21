@@ -28,21 +28,35 @@
             <version>2.3.12.RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <!--flowable-->
+        <!--activiti-->
         <dependency>
-            <groupId>org.flowable</groupId>
-            <artifactId>flowable-bpmn-model</artifactId>
-            <version>6.8.0</version>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-bpmn-model</artifactId>
+            <version>7.1.0.M6</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.flowable</groupId>
-            <artifactId>flowable-bpmn-layout</artifactId>
-            <version>6.8.0</version>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-bpmn-layout</artifactId>
+            <version>7.1.0.M6</version>
         </dependency>
         <dependency>
-            <groupId>org.flowable</groupId>
-            <artifactId>flowable-bpmn-converter</artifactId>
-            <version>6.8.0</version>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-bpmn-converter</artifactId>
+            <version>7.1.0.M6</version>
         </dependency>
         <!--lombok-->
         <dependency>

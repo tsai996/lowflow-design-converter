@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowflow.pojo.node.Node;
 import com.lowflow.pojo.ProcessModel;
 import lombok.extern.slf4j.Slf4j;
-import org.flowable.bpmn.BpmnAutoLayout;
-import org.flowable.bpmn.model.Process;
-import org.flowable.bpmn.model.*;
+import org.activiti.bpmn.BpmnAutoLayout;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.Process;
 
 import java.util.List;
+
 
 /**
  * @Title: BpmnUtil
@@ -31,7 +33,7 @@ public class BpmnUtil {
     public static BpmnModel toBpmnModel(ProcessModel dto) {
         BpmnModel bpmnModel = new BpmnModel();
         // 命名空间
-        bpmnModel.setTargetNamespace("http://flowable.org/bpmn20");
+        bpmnModel.setTargetNamespace("http://activiti.org/bpmn20");
         // 创建一个流程
         Process process = new Process();
         // 设置流程的id

@@ -2,8 +2,8 @@ package com.lowflow.pojo.node;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.flowable.bpmn.model.EndEvent;
-import org.flowable.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.EndEvent;
+import org.activiti.bpmn.model.FlowElement;
 
 import java.util.ArrayList;
 import java.util.List;

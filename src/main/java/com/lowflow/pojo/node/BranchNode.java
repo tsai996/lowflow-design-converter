@@ -1,7 +1,7 @@
 package com.lowflow.pojo.node;
 
 import lombok.Data;
-import org.flowable.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.FlowElement;
 
 import java.util.List;
 

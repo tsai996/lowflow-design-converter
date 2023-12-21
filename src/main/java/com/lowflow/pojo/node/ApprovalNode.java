@@ -5,8 +5,7 @@ import com.lowflow.pojo.enums.ApprovalNobodyEnum;
 import com.lowflow.pojo.enums.ApprovalTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.flowable.bpmn.model.FormProperty;
-import org.flowable.bpmn.model.*;
+import org.activiti.bpmn.model.*;
 
 import java.util.*;
 
@@ -56,8 +55,8 @@ public class ApprovalNode extends Node {
         userTask.setAsynchronous(true);
         // userTask.setFormKey(this.getFormKey());
         // 监听器
-        ArrayList<FlowableListener> flowableListeners = new ArrayList<>();
-        FlowableListener createListener = new FlowableListener();
+        ArrayList<ActivitiListener> flowableListeners = new ArrayList<>();
+        ActivitiListener createListener = new ActivitiListener();
         createListener.setEvent("create");
         createListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
         createListener.setImplementation("${approvalCreatedListener}");

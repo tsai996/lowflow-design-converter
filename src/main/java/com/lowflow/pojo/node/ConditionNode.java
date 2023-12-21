@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lowflow.pojo.condition.FilterRules;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.SequenceFlow;
 import org.apache.commons.lang3.StringUtils;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.SequenceFlow;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
