@@ -71,7 +71,7 @@ public class ApprovalNode extends Node {
             multiInstanceLoopCharacteristics.setSequential(false);
         } else if (this.getMulti() == ApprovalMultiEnum.SINGLE) {
             multiInstanceLoopCharacteristics.setSequential(false);
-            multiInstanceLoopCharacteristics.setCompletionCondition("${nrOfCompletedInstances/nrOfInstances >= 1}");
+            multiInstanceLoopCharacteristics.setCompletionCondition("${nrOfCompletedInstances > 0}");
         }
         String variable = String.format("%sItem", this.getId());
         multiInstanceLoopCharacteristics.setElementVariable(variable);
