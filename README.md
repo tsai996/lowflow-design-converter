@@ -14,6 +14,8 @@ lowflow-design-converter是<a href="https://github.com/tsai996/lowflow-design">l
 - activiti版：**activiti分支**
 #### 在线预览
 https://tsai996.github.io/lowflow-design/
+#### 成品案例
+http://125.124.181.149:8999/
 
 #### 项目源码
 |     |   后端源码  |   前端源码  |
