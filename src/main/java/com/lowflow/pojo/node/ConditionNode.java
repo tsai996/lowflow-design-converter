@@ -30,21 +30,27 @@ public class ConditionNode extends Node {
 
     {
         // 等于
-        operatorMap.put("equal", "var:eq(%s, %s)");
+        operatorMap.put("eq", "var:eq(%s, %s)");
         // 不等于
-        operatorMap.put("not_equal", "var:notEquals(%s, %s)");
-        // 介于
-        operatorMap.put("between", "var:containsAny(%s, %s)");
+        operatorMap.put("ne", "var:notEquals(%s, %s)");
         // 包含
-        operatorMap.put("contains", "var:contains(%s, %s)");
+        operatorMap.put("in", "var:containsAny(%s, %s)");
+        // 不包含
+        operatorMap.put("ni", "var:notContainsAny(%s, %s)");
+        // 为空
+        operatorMap.put("ul", "var:isNull(%s)");
+        // 不为空
+        operatorMap.put("nu", "var:isNotNull(%s)");
+        // 字符包含
+        operatorMap.put("lk", "var:contains(%s, %s)");
+        // 大于
+        operatorMap.put("gt", "var:gt(%s, %s)");
         // 小于
         operatorMap.put("lt", "var:lt(%s, %s)");
         // 小于或等于
-        operatorMap.put("lte", "var:lte(%s, %s)");
-        // 大于
-        operatorMap.put("gt", "var:gt(%s, %s)");
+        operatorMap.put("le", "var:lte(%s, %s)");
         // 大于或等于
-        operatorMap.put("gte", "var:gte(%s, %s)");
+        operatorMap.put("ge", "var:gte(%s, %s)");
     }
 
     protected String stringVal(Object val) {
@@ -82,7 +88,7 @@ public class ConditionNode extends Node {
             } else {
                 return "";
             }
-        }).collect(Collectors.joining("and".equals(filterRules.getLogicalOperator()) ? " && " : " ||"));
+        }).collect(Collectors.joining("and".equals(filterRules.getOperator()) ? " && " : " ||"));
         if (CollectionUtils.isEmpty(filterRules.getGroups())) {
             return expression;
         } else {
@@ -90,8 +96,8 @@ public class ConditionNode extends Node {
                     .getGroups()
                     .stream()
                     .map(this::toConditionExpression)
-                    .collect(Collectors.joining("and".equals(filterRules.getLogicalOperator()) ? " && " : " || "));
-            return String.format("(%s) %s (%s)", expression, "and".equals(filterRules.getLogicalOperator()) ? " && " : " || ", collect);
+                    .collect(Collectors.joining("and".equals(filterRules.getOperator()) ? " && " : " || "));
+            return String.format("(%s) %s (%s)", expression, "and".equals(filterRules.getOperator()) ? " && " : " || ", collect);
         }
     }
 

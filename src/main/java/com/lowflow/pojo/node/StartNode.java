@@ -21,8 +21,6 @@ import java.util.*;
 public class StartNode extends Node {
     // 表单属性
     private List<FormProperty> formProperties = new ArrayList<>();
-    // 操作权限
-    private Map<String, Boolean> operations = new LinkedHashMap<>();
 
     @Override
     public List<FlowElement> convert() {

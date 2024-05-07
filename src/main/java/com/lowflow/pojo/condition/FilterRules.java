@@ -9,7 +9,7 @@ import java.util.List;
  */
 @Data
 public class FilterRules {
-    private String logicalOperator;
+    private String operator;
     private List<Condition> conditions;
     private List<FilterRules> groups;
 }
