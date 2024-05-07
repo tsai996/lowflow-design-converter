@@ -10,5 +10,4 @@ public class Condition {
     private String field;
     private String operator;
     private Object value;
-
 }

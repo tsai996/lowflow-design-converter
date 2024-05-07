@@ -4,8 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowflow.pojo.ProcessModel;
 import com.lowflow.pojo.node.Node;
-import com.lowflow.util.BpmnUtil;
-import org.activiti.bpmn.model.BpmnModel;
+import org.flowable.bpmn.model.BpmnModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,11 +38,11 @@ public class LowflowApplicationTest {
                 "}";
         ObjectMapper objectMapper = new ObjectMapper();
         Node node = objectMapper.readValue(json, Node.class);
-        ProcessModel processModelDTO = new ProcessModel();
-        processModelDTO.setCode("test");
-        processModelDTO.setName("测试");
-        processModelDTO.setProcess(node);
-        BpmnModel bpmnModel = BpmnUtil.toBpmnModel(processModelDTO);
+        ProcessModel processModel = new ProcessModel();
+        processModel.setCode("test");
+        processModel.setName("测试");
+        processModel.setProcess(node);
+        BpmnModel bpmnModel = processModel.toBpmnModel();
         System.out.println("bpmnModel = " + bpmnModel);
     }
 }

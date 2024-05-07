@@ -14,8 +14,7 @@ import lombok.Data;
 public class FormProperty {
     private String id;
     private String name;
-    private boolean readable = true;
-    private boolean writeable = true;
-    private boolean hidden;
-    private boolean required;
+    private Boolean readonly = false;
+    private Boolean hidden;
+    private Boolean required;
 }

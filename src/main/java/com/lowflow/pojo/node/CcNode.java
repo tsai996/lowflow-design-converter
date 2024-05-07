@@ -19,9 +19,7 @@ import java.util.*;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CcNode extends Node {
-    // 审批人
-    private List<String> users;
+public class CcNode extends AssigneeNode {
     // 表单属性
     private List<FormProperty> formProperties = new ArrayList<>();
     // 操作权限
@@ -34,7 +32,7 @@ public class CcNode extends Node {
         ServiceTask serviceTask = new ServiceTask();
         serviceTask.setId(this.getId());
         serviceTask.setName(this.getName());
-        serviceTask.setAsynchronous(true);
+        // serviceTask.setAsynchronous(true);
         serviceTask.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
         serviceTask.setImplementation("${ccDelegate}");
         elements.add(serviceTask);
@@ -51,9 +49,4 @@ public class CcNode extends Node {
         return elements;
     }
 
-    public Set<String> allAssignees(Map<String, Object> values) {
-        HashSet<String> list = new HashSet<>();
-        list.addAll(users);
-        return list;
-    }
 }

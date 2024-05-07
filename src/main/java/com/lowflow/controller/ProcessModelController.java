@@ -1,6 +1,5 @@
 package com.lowflow.controller;
 
-import com.lowflow.util.BpmnUtil;
 import com.lowflow.pojo.ProcessModel;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
@@ -27,7 +26,7 @@ public class ProcessModelController {
      */
     @PostMapping("/download")
     public void downloadXml(@RequestBody ProcessModel processModel) throws IOException {
-        BpmnModel bpmnModel = BpmnUtil.toBpmnModel(processModel);
+        BpmnModel bpmnModel = processModel.toBpmnModel();
         byte[] xmlBytes = new BpmnXMLConverter().convertToXML(bpmnModel);
         if (Objects.nonNull(xmlBytes)) {
             String fileName = processModel.getName().replaceAll(" ", "_") + ".bpmn20.xml";
