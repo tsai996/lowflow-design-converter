@@ -6,8 +6,3 @@ server:
 spring:
   application:
     name: lowflow
-
-
-
-
-

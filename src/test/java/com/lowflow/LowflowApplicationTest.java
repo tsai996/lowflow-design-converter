@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowflow.pojo.ProcessModel;
 import com.lowflow.pojo.node.Node;
-import org.flowable.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.BpmnModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

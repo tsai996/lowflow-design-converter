@@ -3,7 +3,7 @@ package com.lowflow.pojo.node;
 import com.lowflow.pojo.enums.AssigneeTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.flowable.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.FlowElement;
 
 import java.util.List;
 

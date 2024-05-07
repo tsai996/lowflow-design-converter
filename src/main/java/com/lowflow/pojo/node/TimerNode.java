@@ -3,8 +3,8 @@ package com.lowflow.pojo.node;
 import com.lowflow.pojo.enums.TimerWaitType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.activiti.bpmn.model.*;
 import org.apache.commons.lang3.StringUtils;
-import org.flowable.bpmn.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
