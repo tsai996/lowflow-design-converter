@@ -40,13 +40,13 @@ public class ApprovalNode extends AssigneeNode {
         // userTask.setAsynchronous(true);
         // userTask.setFormKey(this.getFormKey());
         // 监听器
-        ArrayList<ActivitiListener> flowableListeners = new ArrayList<>();
+        ArrayList<ActivitiListener> activitiListeners = new ArrayList<>();
         ActivitiListener createListener = new ActivitiListener();
         createListener.setEvent("create");
         createListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
         createListener.setImplementation("${approvalCreatedListener}");
-        flowableListeners.add(createListener);
-        userTask.setTaskListeners(flowableListeners);
+        activitiListeners.add(createListener);
+        userTask.setTaskListeners(activitiListeners);
         // 审批人
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
         if (this.getMulti() == ApprovalMultiEnum.SEQUENTIAL) {

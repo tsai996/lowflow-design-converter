@@ -35,7 +35,7 @@ public class ProcessModel{
     public BpmnModel toBpmnModel() {
         BpmnModel bpmnModel = new BpmnModel();
         // 命名空间
-        bpmnModel.setTargetNamespace("https://flowable.org/bpmn20");
+        bpmnModel.setTargetNamespace("https://activiti.org/bpmn20");
         // 创建一个流程
         Process process = new Process();
         // 设置流程的id

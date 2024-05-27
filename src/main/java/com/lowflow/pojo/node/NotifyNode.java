@@ -3,10 +3,10 @@ package com.lowflow.pojo.node;
 import com.lowflow.pojo.enums.NotifyTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.ImplementationType;
-import org.flowable.bpmn.model.SequenceFlow;
-import org.flowable.bpmn.model.ServiceTask;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.ImplementationType;
+import org.activiti.bpmn.model.SequenceFlow;
+import org.activiti.bpmn.model.ServiceTask;
 
 import java.util.ArrayList;
 import java.util.List;
