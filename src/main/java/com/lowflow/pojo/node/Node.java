@@ -30,6 +30,7 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = ConditionNode.class, name = "condition"),
         @JsonSubTypes.Type(value = ExclusiveNode.class, name = "exclusive"),
         @JsonSubTypes.Type(value = TimerNode.class, name = "timer"),
+        @JsonSubTypes.Type(value = NotifyNode.class, name = "notify"),
         @JsonSubTypes.Type(value = EndNode.class, name = "end")
 })
 public abstract class Node implements Serializable {
