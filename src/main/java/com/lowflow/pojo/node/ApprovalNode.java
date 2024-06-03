@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import org.flowable.bpmn.model.FormProperty;
 import org.flowable.bpmn.model.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 /**
@@ -26,6 +28,8 @@ public class ApprovalNode extends AssigneeNode {
     private Map<String, Boolean> operations = new LinkedHashMap<>();
     // 多人审批方式
     private ApprovalMultiEnum multi;
+    // 多人会签通过百分比
+    private BigDecimal multiPercent;
     // 审批人为空时处理方式
     private ApprovalNobodyEnum nobody;
     // 审批人为空时指定人员
@@ -54,6 +58,10 @@ public class ApprovalNode extends AssigneeNode {
             multiInstanceLoopCharacteristics.setSequential(true);
         } else if (this.getMulti() == ApprovalMultiEnum.JOINT) {
             multiInstanceLoopCharacteristics.setSequential(false);
+            if (Objects.nonNull(this.getMultiPercent()) && this.getMultiPercent().compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal percent = this.getMultiPercent().divide(new BigDecimal(100), 2, RoundingMode.DOWN);
+                multiInstanceLoopCharacteristics.setCompletionCondition(String.format("${nrOfCompletedInstances/nrOfInstances >= %s}", percent));
+            }
         } else if (this.getMulti() == ApprovalMultiEnum.SINGLE) {
             multiInstanceLoopCharacteristics.setSequential(false);
             multiInstanceLoopCharacteristics.setCompletionCondition("${nrOfCompletedInstances > 0}");
