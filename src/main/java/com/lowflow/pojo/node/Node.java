@@ -7,11 +7,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.FlowElement;
+import org.flowable.bpmn.model.FlowableListener;
 import org.flowable.bpmn.model.SequenceFlow;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @Title: Node
@@ -44,6 +48,8 @@ public abstract class Node implements Serializable {
     // 节点类型
     @JsonTypeId
     private String type;
+    // 执行监听器
+    private List<NodeListener> executionListeners;
     // 子节点
     private Node child;
     // 分支id
@@ -51,6 +57,19 @@ public abstract class Node implements Serializable {
     private String branchId;
 
     public abstract List<FlowElement> convert();
+
+    public List<FlowableListener> buidEventListener() {
+        if (!CollectionUtils.isEmpty(this.executionListeners)) {
+            return this.executionListeners.stream().filter(l -> StringUtils.isNotBlank(l.getImplementation())).map(listener -> {
+                FlowableListener executionListener = new FlowableListener();
+                executionListener.setEvent(listener.getEvent());
+                executionListener.setImplementationType(listener.getImplementationType());
+                executionListener.setImplementation(listener.getImplementation());
+                return executionListener;
+            }).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
 
     public SequenceFlow buildSequence(Node next) {
         String sourceRef;

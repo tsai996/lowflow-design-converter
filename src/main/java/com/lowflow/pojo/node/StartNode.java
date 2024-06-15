@@ -29,6 +29,7 @@ public class StartNode extends Node {
         StartEvent startEvent = new StartEvent();
         startEvent.setId(this.getId());
         startEvent.setName(this.getName());
+        startEvent.setExecutionListeners(this.buidEventListener());
         elements.add(startEvent);
         // 下一个节点的连线
         Node child = this.getChild();

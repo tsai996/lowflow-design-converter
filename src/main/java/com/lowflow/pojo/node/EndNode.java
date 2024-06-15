@@ -27,6 +27,7 @@ public class EndNode extends Node {
         EndEvent endEvent = new EndEvent();
         endEvent.setId(this.getId());
         endEvent.setName(this.getName());
+        endEvent.setExecutionListeners(this.buidEventListener());
         elements.add(endEvent);
         return elements;
     }

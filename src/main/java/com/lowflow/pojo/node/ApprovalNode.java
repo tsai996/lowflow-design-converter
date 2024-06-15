@@ -4,12 +4,15 @@ import com.lowflow.pojo.enums.ApprovalMultiEnum;
 import com.lowflow.pojo.enums.ApprovalNobodyEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.FormProperty;
 import org.flowable.bpmn.model.*;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Title: ApprovalNode
@@ -34,6 +37,8 @@ public class ApprovalNode extends AssigneeNode {
     private ApprovalNobodyEnum nobody;
     // 审批人为空时指定人员
     private List<String> nobodyUsers;
+    // 任务监听器
+    private List<NodeListener> taskListeners;
 
     @Override
     public List<FlowElement> convert() {
@@ -44,14 +49,17 @@ public class ApprovalNode extends AssigneeNode {
         userTask.setName(this.getName());
         // userTask.setAsynchronous(true);
         // userTask.setFormKey(this.getFormKey());
-        // 监听器
-        ArrayList<FlowableListener> flowableListeners = new ArrayList<>();
-        FlowableListener createListener = new FlowableListener();
-        createListener.setEvent("create");
-        createListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
-        createListener.setImplementation("${approvalCreatedListener}");
-        flowableListeners.add(createListener);
-        userTask.setTaskListeners(flowableListeners);
+        userTask.setExecutionListeners(this.buidEventListener());
+        if (!CollectionUtils.isEmpty(this.taskListeners)) {
+            List<FlowableListener> listeners = this.taskListeners.stream().filter(l -> StringUtils.isNotBlank(l.getImplementation())).map(listener -> {
+                FlowableListener eventListener = new FlowableListener();
+                eventListener.setEvent(listener.getEvent());
+                eventListener.setImplementation(listener.getImplementation());
+                eventListener.setImplementationType(listener.getImplementationType());
+                return eventListener;
+            }).collect(Collectors.toList());
+            userTask.setTaskListeners(listeners);
+        }
         // 审批人
         MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
         if (this.getMulti() == ApprovalMultiEnum.SEQUENTIAL) {
