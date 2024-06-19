@@ -4,9 +4,8 @@ import com.lowflow.pojo.enums.ApprovalMultiEnum;
 import com.lowflow.pojo.enums.ApprovalNobodyEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.activiti.bpmn.model.*;
 import org.apache.commons.lang3.StringUtils;
-import org.flowable.bpmn.model.FormProperty;
-import org.flowable.bpmn.model.*;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -51,8 +50,8 @@ public class ApprovalNode extends AssigneeNode {
         // userTask.setFormKey(this.getFormKey());
         userTask.setExecutionListeners(this.buidEventListener());
         if (!CollectionUtils.isEmpty(this.taskListeners)) {
-            List<FlowableListener> listeners = this.taskListeners.stream().filter(l -> StringUtils.isNotBlank(l.getImplementation())).map(listener -> {
-                FlowableListener eventListener = new FlowableListener();
+            List<ActivitiListener> listeners = this.taskListeners.stream().filter(l -> StringUtils.isNotBlank(l.getImplementation())).map(listener -> {
+                ActivitiListener eventListener = new ActivitiListener();
                 eventListener.setEvent(listener.getEvent());
                 eventListener.setImplementation(listener.getImplementation());
                 eventListener.setImplementationType(listener.getImplementationType());

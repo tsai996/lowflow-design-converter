@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
+import org.activiti.bpmn.model.ActivitiListener;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.SequenceFlow;
 import org.apache.commons.lang3.StringUtils;
-import org.flowable.bpmn.model.FlowElement;
-import org.flowable.bpmn.model.FlowableListener;
-import org.flowable.bpmn.model.SequenceFlow;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
@@ -58,10 +58,10 @@ public abstract class Node implements Serializable {
 
     public abstract List<FlowElement> convert();
 
-    public List<FlowableListener> buidEventListener() {
+    public List<ActivitiListener> buidEventListener() {
         if (!CollectionUtils.isEmpty(this.executionListeners)) {
             return this.executionListeners.stream().filter(l -> StringUtils.isNotBlank(l.getImplementation())).map(listener -> {
-                FlowableListener executionListener = new FlowableListener();
+                ActivitiListener executionListener = new ActivitiListener();
                 executionListener.setEvent(listener.getEvent());
                 executionListener.setImplementationType(listener.getImplementationType());
                 executionListener.setImplementation(listener.getImplementation());
