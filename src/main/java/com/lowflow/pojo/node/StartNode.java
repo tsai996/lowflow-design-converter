@@ -6,7 +6,9 @@ import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.SequenceFlow;
 import org.flowable.bpmn.model.StartEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @Title: StartNode
@@ -32,12 +34,12 @@ public class StartNode extends Node {
         startEvent.setExecutionListeners(this.buidEventListener());
         elements.add(startEvent);
         // 下一个节点的连线
-        Node child = this.getChild();
-        SequenceFlow sequenceFlow = this.buildSequence(child);
+        Node next = this.getNext();
+        SequenceFlow sequenceFlow = this.buildSequence(next);
         elements.add(sequenceFlow);
         // 下一个节点
-        if (Objects.nonNull(child)) {
-            List<FlowElement> flowElements = child.convert();
+        if (Objects.nonNull(next)) {
+            List<FlowElement> flowElements = next.convert();
             elements.addAll(flowElements);
         }
         return elements;

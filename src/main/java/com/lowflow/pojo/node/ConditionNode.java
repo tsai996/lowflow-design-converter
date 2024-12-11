@@ -97,7 +97,11 @@ public class ConditionNode extends Node {
                     .stream()
                     .map(this::toConditionExpression)
                     .collect(Collectors.joining("and".equals(filterRules.getOperator()) ? " && " : " || "));
-            return String.format("(%s) %s (%s)", expression, "and".equals(filterRules.getOperator()) ? " && " : " || ", collect);
+            if (StringUtils.isNotBlank(expression)) {
+                return String.format("(%s) %s (%s)", expression, "and".equals(filterRules.getOperator()) ? " && " : " || ", collect);
+            } else {
+                return collect;
+            }
         }
     }
 
@@ -109,7 +113,7 @@ public class ConditionNode extends Node {
         sequenceFlow.setId(this.getId());
         sequenceFlow.setName(this.getName());
         sequenceFlow.setTargetRef(
-                Optional.ofNullable(this.getChild()).map(Node::getId).orElse(this.getBranchId())
+                Optional.ofNullable(this.getNext()).map(Node::getId).orElse(this.getBranchId())
         );
         String expression = this.toConditionExpression(this.getConditions());
         if (StringUtils.isNotBlank(expression)) {
@@ -117,10 +121,10 @@ public class ConditionNode extends Node {
         }
         elements.add(sequenceFlow);
         // 下一个节点
-        Node child = this.getChild();
-        if (Objects.nonNull(child)) {
-            child.setBranchId(this.getBranchId());
-            List<FlowElement> flowElements = child.convert();
+        Node next = this.getNext();
+        if (Objects.nonNull(next)) {
+            next.setBranchId(this.getBranchId());
+            List<FlowElement> flowElements = next.convert();
             elements.addAll(flowElements);
         }
         return elements;

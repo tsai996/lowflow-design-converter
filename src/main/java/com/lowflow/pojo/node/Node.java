@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
         @JsonSubTypes.Type(value = ExclusiveNode.class, name = "exclusive"),
         @JsonSubTypes.Type(value = TimerNode.class, name = "timer"),
         @JsonSubTypes.Type(value = NotifyNode.class, name = "notify"),
+        @JsonSubTypes.Type(value = ServiceNode.class, name = "service"),
         @JsonSubTypes.Type(value = EndNode.class, name = "end")
 })
 public abstract class Node implements Serializable {
@@ -51,7 +52,7 @@ public abstract class Node implements Serializable {
     // 执行监听器
     private List<NodeListener> executionListeners;
     // 子节点
-    private Node child;
+    private Node next;
     // 分支id
     @JsonIgnore
     private String branchId;
