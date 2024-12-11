@@ -37,13 +37,13 @@ public class CcNode extends AssigneeNode {
         serviceTask.setImplementation("${ccDelegate}");
         elements.add(serviceTask);
         // 下一个节点的连线
-        Node child = this.getChild();
-        SequenceFlow sequenceFlow = this.buildSequence(child);
+        Node next = this.getNext();
+        SequenceFlow sequenceFlow = this.buildSequence(next);
         elements.add(sequenceFlow);
         // 下一个节点
-        if (Objects.nonNull(child)) {
-            child.setBranchId(this.getBranchId());
-            List<FlowElement> flowElements = child.convert();
+        if (Objects.nonNull(next)) {
+            next.setBranchId(this.getBranchId());
+            List<FlowElement> flowElements = next.convert();
             elements.addAll(flowElements);
         }
         return elements;

@@ -1,10 +1,8 @@
 package com.lowflow.pojo.node;
 
-import com.lowflow.pojo.enums.NotifyTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.ImplementationType;
 import org.activiti.bpmn.model.SequenceFlow;
 import org.activiti.bpmn.model.ServiceTask;
 
@@ -14,10 +12,9 @@ import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class NotifyNode extends AssigneeNode {
-    private List<NotifyTypeEnum> types;
-    private String subject;
-    private String content;
+public class ServiceNode extends Node {
+    private String implementationType;
+    private String implementation;
 
     @Override
     public List<FlowElement> convert() {
@@ -26,9 +23,9 @@ public class NotifyNode extends AssigneeNode {
         ServiceTask serviceTask = new ServiceTask();
         serviceTask.setId(this.getId());
         serviceTask.setName(this.getName());
-        serviceTask.setAsynchronous(true);
-        serviceTask.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION);
-        serviceTask.setImplementation("${notifyDelegate}");
+        serviceTask.setExecutionListeners(this.buidEventListener());
+        serviceTask.setImplementationType(implementationType);
+        serviceTask.setImplementation(implementation);
         elements.add(serviceTask);
         // 下一个节点的连线
         Node next = this.getNext();

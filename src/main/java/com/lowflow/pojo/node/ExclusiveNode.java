@@ -42,16 +42,16 @@ public class ExclusiveNode extends BranchNode {
         // 子节点
         if (!CollectionUtils.isEmpty(children)) {
             for (Node next : children) {
-                String branchId = Optional.ofNullable(this.getChild()).map(Node::getId).orElse(this.getBranchId());
+                String branchId = Optional.ofNullable(this.getNext()).map(Node::getId).orElse(this.getBranchId());
                 next.setBranchId(branchId);
                 elements.addAll(next.convert());
             }
         }
         // 下一个节点
-        Node child = this.getChild();
-        if (Objects.nonNull(child)) {
-            child.setBranchId(this.getBranchId());
-            List<FlowElement> flowElements = child.convert();
+        Node next = this.getNext();
+        if (Objects.nonNull(next)) {
+            next.setBranchId(this.getBranchId());
+            List<FlowElement> flowElements = next.convert();
             elements.addAll(flowElements);
         }
         return elements;
