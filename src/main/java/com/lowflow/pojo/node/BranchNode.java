@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 public abstract class BranchNode extends Node {
-    private List<ConditionNode> children;
+    private List<ConditionNode> branches;
 
     public abstract List<FlowElement> convert();
 
