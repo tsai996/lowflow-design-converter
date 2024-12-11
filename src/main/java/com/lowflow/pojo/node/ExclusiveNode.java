@@ -32,16 +32,16 @@ public class ExclusiveNode extends BranchNode {
         exclusiveGateway.setId(this.getId());
         exclusiveGateway.setName(this.getName());
         elements.add(exclusiveGateway);
-        List<ConditionNode> children = this.getChildren();
-        children.stream()
+        List<ConditionNode> branches = this.getBranches();
+        branches.stream()
                 .filter(ConditionNode::getDef)
                 .findFirst()
                 .ifPresent(conditionNode -> {
                     exclusiveGateway.setDefaultFlow(conditionNode.getId());
                 });
         // 子节点
-        if (!CollectionUtils.isEmpty(children)) {
-            for (Node next : children) {
+        if (!CollectionUtils.isEmpty(branches)) {
+            for (Node next : branches) {
                 String branchId = Optional.ofNullable(this.getNext()).map(Node::getId).orElse(this.getBranchId());
                 next.setBranchId(branchId);
                 elements.addAll(next.convert());
