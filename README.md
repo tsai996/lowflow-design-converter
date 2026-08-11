@@ -1,68 +1,160 @@
 <div align="center">
-    <h1>lowflow-design-converter</h1>
-    <p>Convert low-code process designs to BPMN</p>
+  <h1>lowflow-design-converter</h1>
+  <p>Convert low-code process definitions into Flowable-compatible BPMN 2.0 XML.</p>
+
+  <p>
+    <strong>English</strong> · <a href="README.zh-CN.md">简体中文</a>
+  </p>
+
+  <p>
+    <img alt="Java 8" src="https://img.shields.io/badge/Java-8-orange" />
+    <img alt="Spring Boot 2.3.12" src="https://img.shields.io/badge/Spring%20Boot-2.3.12-6DB33F?logo=springboot&logoColor=white" />
+    <img alt="Flowable 6.8.0" src="https://img.shields.io/badge/Flowable-6.8.0-007ACC" />
+    <img alt="GPL-3.0 license" src="https://img.shields.io/badge/License-GPL--3.0-blue" />
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/tsai996/lowflow-design-converter?style=flat&logo=github" />
+  </p>
 </div>
 
-<p align="center">
-    <strong>English</strong> | <a href="README.zh-CN.md">简体中文</a>
-</p>
+## Overview
 
-<p align="center">
-<img alt="GitHub stars" src="https://img.shields.io/github/stars/tsai996/lowflow-design-converter?style=flat&logo=github" />
-<img alt="GitHub forks" src='https://img.shields.io/github/forks/tsai996/lowflow-design-converter?style=flat&logo=github'/>
-</p>
+`lowflow-design-converter` is the backend converter for the [lowflow-design](https://github.com/tsai996/lowflow-design) visual process designer. It accepts a JSON process tree, builds a Flowable BPMN model, applies automatic layout, and returns a downloadable `.bpmn20.xml` file.
 
-## Introduction
+- JSON-to-BPMN 2.0 conversion
+- Automatic diagram layout with Flowable
+- REST endpoint for direct XML download
+- Flowable implementation on `main`; Activiti implementation on `activiti`
 
-lowflow-design-converter converts designs created with the [lowflow-design low-code process designer](https://github.com/tsai996/lowflow-design) from JSON into XML recognized by workflow engines.
+## Quick start
 
-- Flowable version: **main branch**
-- Activiti version: **activiti branch**
+Requirements: JDK 8 and Maven 3.6+.
 
-### Online Demo
+```bash
+git clone https://github.com/tsai996/lowflow-design-converter.git
+cd lowflow-design-converter
+mvn org.springframework.boot:spring-boot-maven-plugin:2.3.12.RELEASE:run
+```
 
-https://tsai996.github.io/lowflow-design/
+You can also run `com.lowflow.LowflowApplication` directly from your IDE. The service starts at `http://localhost:8080/lowflow`.
 
-### Product Demo
+## API
 
-https://demo.lowflow.vip/
+### Download BPMN XML
 
-#### Source Code
+```text
+POST /lowflow/model/download
+Content-Type: application/json
+```
 
-| | Backend | Frontend |
+Create a minimal `process.json`:
+
+```json
+{
+  "code": "leave-process",
+  "name": "Leave request",
+  "remark": "Minimal start-to-end process",
+  "process": {
+    "id": "start",
+    "type": "start",
+    "name": "Start",
+    "next": {
+      "id": "end",
+      "pid": "start",
+      "type": "end",
+      "name": "End"
+    }
+  }
+}
+```
+
+Send it to the converter:
+
+```bash
+curl -X POST "http://localhost:8080/lowflow/model/download" \
+  -H "Content-Type: application/json" \
+  --data-binary @process.json \
+  --output leave-process.bpmn20.xml
+```
+
+The response is an XML attachment. Its filename is derived from the process `name`.
+
+## Supported nodes
+
+| JSON `type` | BPMN element |
+|---|---|
+| `start` | Start event |
+| `approval` | User task |
+| `cc` | Service task using `${ccDelegate}` |
+| `exclusive` | Exclusive gateway |
+| `condition` | Conditional sequence flow |
+| `timer` | Intermediate timer catch event |
+| `notify` | Async service task using `${notifyDelegate}` |
+| `service` | Configurable service task |
+| `end` | End event |
+
+Notes:
+
+- Connect sequential nodes with `next`; each child node's `pid` must match its parent node's `id`.
+- `condition` nodes are branches of an `exclusive` node.
+- The parallel node class is currently unfinished and is not registered as a supported JSON type.
+- Projects deploying generated XML must provide the `ccDelegate` and `notifyDelegate` beans when those node types are used.
+
+## Project structure
+
+```text
+src/main/java/com/lowflow/
+├── LowflowApplication.java          # Spring Boot entry point
+├── controller/
+│   └── ProcessModelController.java  # Conversion download endpoint
+└── pojo/
+    ├── ProcessModel.java            # JSON model to BPMN conversion
+    ├── condition/                    # Conditional expression models
+    ├── enums/                        # Node option enums
+    └── node/                         # BPMN node converters
+```
+
+## Demos and related projects
+
+- [Online designer](https://tsai996.github.io/lowflow-design/)
+- [Product demo](https://demo.lowflow.vip/)
+
+| Host | Converter backend | Designer frontend |
 |---|---|---|
-| GitHub | https://github.com/tsai996/lowflow-design-converter | https://github.com/tsai996/lowflow-design |
-| Gitee | https://gitee.com/cai_xiao_feng/lowflow-design-converter | https://gitee.com/cai_xiao_feng/lowflow-design |
+| GitHub | [lowflow-design-converter](https://github.com/tsai996/lowflow-design-converter) | [lowflow-design](https://github.com/tsai996/lowflow-design) |
+| Gitee | [lowflow-design-converter](https://gitee.com/cai_xiao_feng/lowflow-design-converter) | [lowflow-design](https://gitee.com/cai_xiao_feng/lowflow-design) |
 
-#### Before and After Conversion
+### Conversion preview
 
-<p>
-    <img alt="Lowflow design" src="public/lowflow.png" style="display: inline-block"/>
-    <img alt="BPMN output" src="public/bpmn-img.png" style="display: inline-block"/>
+<p align="center">
+  <img alt="Lowflow process design" src="public/lowflow.png" width="48%" />
+  <img alt="Generated BPMN diagram" src="public/bpmn-img.png" width="48%" />
 </p>
 
-## Join the Community
+## Community
 
 Add the WeChat contact below and include “join group” in your request, or join the QQ group directly.
 
 <p>
-   <img alt="WeChat" src="public/wx.jpg" width="240" height="400" style="display: inline-block"/>
-   <img alt="QQ group" src="public/qq_qun.jpg" width="240" height="400" style="display: inline-block"/>
+  <img alt="WeChat" src="public/wx.jpg" width="240" height="400" />
+  <img alt="QQ group" src="public/qq_qun.jpg" width="240" height="400" />
 </p>
 
 **Job referrals are welcome.**
 
 ## Sponsor
 
-Open source maintenance takes time. If this project helps you, you can buy me a milk tea.
+If this project helps you, you can support its maintenance by buying the author a milk tea.
 
 <p>
-    <img alt="WeChat Pay" src="public/wxpay.png" height="240" width="240" style="display: inline-block"/>
-    <img alt="Alipay" src="public/alipay.png" height="240" width="240" style="display: inline-block"/>
+  <img alt="WeChat Pay" src="public/wxpay.png" width="240" height="240" />
+  <img alt="Alipay" src="public/alipay.png" width="240" height="240" />
 </p>
 
-## Recommendation
+## Recommended reading
 
-When using this project, we recommend reading He Bo's book [*In-Depth Flowable Process Engine: Core Principles and Advanced Practice*](https://item.jd.com/14804836.html). The book includes a foreword by Flowable founder Tijs Rademakers and is a helpful resource for systematically learning and mastering Flowable.
+[*In-Depth Flowable Process Engine: Core Principles and Advanced Practice*](https://item.jd.com/14804836.html), by He Bo, includes a foreword by Flowable founder Tijs Rademakers and covers Flowable from fundamentals to advanced use.
 
-![Flowable book](public/flowable.jpg)
+<img alt="In-Depth Flowable Process Engine book" src="public/flowable.jpg" width="360" />
+
+## License
+
+Licensed under the [GNU General Public License v3.0](LICENSE).
